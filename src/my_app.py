@@ -8,7 +8,7 @@ app = Dash(__name__)
 server = app.server
 # -- Import and clean data (importing csv into pandas)
 # df = pd.read_csv("intro_bees.csv")
-df = pd.read_csv("final_data.csv")
+df = pd.read_csv('final_data.csv')
 
 bp_df = df.drop(['PREDICTED_SBP', 'PREDICTED_DBP'], axis=1)
 sd_bp_df = pd.DataFrame()
@@ -37,15 +37,15 @@ app.layout = html.Div([
     
     html.Div(id='plots', children=[
         html.Div(id='plot1', children=[
-            dcc.Graph(id='sd_plot', figure={}, style={'width': "40%"})
+            dcc.Graph(id='sd_plot', figure={}, style={'display': 'flex'})
         ]),
         html.Div(id='plot2', children=[
-            dcc.Graph(id='scatter_sys', figure={}, style={'width': "40%"})
+            dcc.Graph(id='scatter_sys', figure={}, style={'display': 'flex'})
         ]),
         html.Div(id='plot3', children=[
-            dcc.Graph(id='scatter_dia', figure={}, style={'width': "40%"})
+            dcc.Graph(id='scatter_dia', figure={}, style={'display': 'flex'})
         ])
-    ])
+    ], style={'display': 'flex','flex-wrap': 'wrap'})
     
 ])
 
@@ -81,4 +81,4 @@ def update_graph(option_slctd):
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
