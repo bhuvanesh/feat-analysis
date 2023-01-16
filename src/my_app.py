@@ -45,7 +45,7 @@ app.layout = html.Div([
         html.Div(id='plot3', children=[
             dcc.Graph(id='scatter_dia', figure={}, style={'display': 'flex'})
         ])
-    ], style={'display': 'flex','flex-wrap': 'wrap'})
+    ], style={'display': 'flex','flex-wrap': 'wrap', 'justify-content': 'center', 'align-items':'center', 'width': '80vw'})
     
 ])
 
@@ -65,15 +65,15 @@ def update_graph(option_slctd):
 
     container = "FEATURE SELECTED: {}".format(option_slctd)
 
-    sd_dff = sd_bp_df.copy()
-    bp_dff = bp_df.copy()
+    # sd_dff = sd_bp_df.copy()
+    # bp_dff = bp_df.copy()
     # dff = dff[dff["Year"] == option_slctd]
     # dff = dff[dff["Affected by"] == "Varroa_mites"]
 
     # Plotly Express
-    fig1 = px.histogram(sd_dff, x=option_slctd, nbins=50)
-    fig2 = px.scatter(bp_dff, x=option_slctd, y='DBP')
-    fig3 = px.scatter(bp_dff, x=option_slctd, y='SBP')
+    fig1 = px.histogram(sd_bp_df, x=option_slctd, nbins=50, color_discrete_sequence = ['hotpink'])
+    fig2 = px.scatter(bp_df, x=option_slctd, y='DBP', color_discrete_sequence = ['hotpink'])
+    fig3 = px.scatter(bp_df, x=option_slctd, y='SBP', color_discrete_sequence = ['hotpink'])
    
 
     return container, fig1, fig2, fig3
