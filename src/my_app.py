@@ -29,7 +29,8 @@ app.layout = html.Div([
                  options = f_columns,
                  multi=False,
                  value='PTT_PPG_DIASTOLIC',
-                 style={'width': "40%"}
+                 style={'width': "40%", 'color': 'hotpink', 'font-size': 12},
+                 clearable=False
                  ),
 
     html.Div(id='output_container', children=[]),
@@ -37,15 +38,15 @@ app.layout = html.Div([
     
     html.Div(id='plots', children=[
         html.Div(id='plot1', children=[
-            dcc.Graph(id='sd_plot', figure={}, style={'display': 'flex'})
+            dcc.Graph(id='sd_plot', figure={}, style={'display': 'flex'}, config={'modeBarButtonsToRemove': ['select2d', 'lasso2d'], 'displaylogo': False})
         ]),
         html.Div(id='plot2', children=[
-            dcc.Graph(id='scatter_sys', figure={}, style={'display': 'flex'})
+            dcc.Graph(id='scatter_sys', figure={}, style={'display': 'flex'}, config={'modeBarButtonsToRemove': ['select2d', 'lasso2d'], 'displaylogo': False})
         ]),
         html.Div(id='plot3', children=[
-            dcc.Graph(id='scatter_dia', figure={}, style={'display': 'flex'})
+            dcc.Graph(id='scatter_dia', figure={}, style={'display': 'flex'}, config={'modeBarButtonsToRemove': ['select2d', 'lasso2d'], 'displaylogo': False})
         ])
-    ], style={'display': 'flex','flex-wrap': 'wrap', 'justify-content': 'center', 'align-items':'center', 'width': '80vw'})
+    ], style={'display': 'flex','flex-wrap': 'wrap', 'justify-content': 'center',  'width': '80vw', 'height': '100vh'})
     
 ])
 
@@ -72,6 +73,7 @@ def update_graph(option_slctd):
 
     # Plotly Express
     fig1 = px.histogram(sd_bp_df, x=option_slctd, nbins=50, color_discrete_sequence = ['hotpink'])
+    fig1.update_traces(marker_line_width=1,marker_line_color="white")
     fig2 = px.scatter(bp_df, x=option_slctd, y='DBP', color_discrete_sequence = ['hotpink'])
     fig3 = px.scatter(bp_df, x=option_slctd, y='SBP', color_discrete_sequence = ['hotpink'])
    
