@@ -1,8 +1,9 @@
 import pandas as pd
 import plotly.express as px  # (version 4.7.0 or higher)
 import plotly.graph_objects as go
-from dash import Dash, dcc, html, Input, Output  # pip install dash (version 2.0.0 or higher)
+from dash import Dash, dcc, html, Input, Output, dash_table  # pip install dash (version 2.0.0 or higher)
 import dash_bootstrap_components as dbc
+
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=1.0'}])
@@ -10,7 +11,6 @@ server = app.server
 # -- Import and clean data (importing csv into pandas)
 # df = pd.read_csv("intro_bees.csv")
 df = pd.read_csv('final_data.csv')
-
 bp_df = df.drop(['PREDICTED_SBP', 'PREDICTED_DBP'], axis=1)
 sd_bp_df = pd.DataFrame()
 for cols in bp_df:
@@ -19,6 +19,8 @@ for cols in bp_df:
     sd_bp_df[cols] = bp_df.groupby('MSR_ID')[cols].std().reset_index()[cols]
 
 f_columns = [col for col in sd_bp_df]
+
+table_df1 = pd.read_csv('correlations.csv')
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -66,7 +68,26 @@ app.layout = html.Div([
             dbc.Col(html.Div(id='plot3', children=[
              dcc.Graph(id='scatter_dia', figure={}, style={'display': 'flex'}, config={'modeBarButtonsToRemove': ['select2d', 'lasso2d'], 'displaylogo': False})
          ]))
-        ])
+        ]),
+        dbc.Row([
+            html.Br(),
+            html.H5('PEARSON AND MIC VALUES', className='text-center navbar-text navbar-light bg-light')]
+        ),
+        dbc.Row([
+            dbc.Col(dash_table.DataTable(
+                data=table_df1.to_dict('records'),
+                columns=[{'id': c, 'name': c} for c in table_df1.columns],
+                sort_action='native',
+                css=[{'selector': 'table', 'rule': 'table-layout: fixed'}],
+                style_cell={
+                    'width': '{}%'.format(len(table_df1.columns)),
+                    'textOverflow': 'ellipsis',
+                    'overflow': 'hidden'
+    }
+                ))
+        ]),
+        html.Br(),
+        
     ]),
 
     # html.Div(id='plots', children=[
